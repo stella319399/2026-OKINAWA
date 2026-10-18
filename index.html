@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>沖繩那霸飯店比價與交通指南</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome 圖示 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f4f6f8;
+            font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .hero-section {
+            background: linear-gradient(135deg, #0d6efd 0%, #00b4d8 100%);
+            color: white;
+            padding: 3.5rem 0 2.5rem 0;
+            border-radius: 0 0 24px 24px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .main-container {
+            flex: 1;
+        }
+        .hotel-card {
+            border: none;
+            border-radius: 14px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            transition: all 0.25s ease-in-out;
+            background: #ffffff;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .hotel-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 24px rgba(0,0,0,0.12);
+        }
+        .badge-tag {
+            font-weight: 600;
+            font-size: 0.85rem;
+            padding: 0.4em 0.8em;
+            border-radius: 8px;
+        }
+        .price-best {
+            color: #dc3545;
+            font-weight: 700;
+            font-size: 1.05rem;
+        }
+        .platform-badge {
+            font-size: 0.78rem;
+            background-color: #e9ecef;
+            color: #495057;
+            border-radius: 4px;
+            padding: 2px 7px;
+            font-weight: 600;
+        }
+        .info-pill {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 0.88rem;
+        }
+        .footer-memo {
+            background-color: #1e293b;
+            color: #cbd5e1;
+        }
+        .hotel-title-link {
+            color: #212529;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .hotel-title-link:hover {
+            color: #0d6efd;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header / Hero Section -->
+    <header class="hero-section text-center mb-4">
+        <div class="container">
+            <h1 class="fw-bold mb-2"><i class="fa-solid fa-hotel me-2"></i>沖繩那霸 9 大精選飯店比價指南</h1>
+            <p class="lead mb-0 fs-6 text-white-50">深夜抵達放行李 ‧ 方便租車自駕 ‧ 清晨 8:30 飛機回台首選</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container main-container mb-5">
+
+        <!-- 搜尋與篩選工具列 -->
+        <div class="card border-0 shadow-sm p-3 mb-4 rounded-4">
+            <div class="row g-3">
+                <div class="col-md-7">
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
+                        <input type="text" id="searchInput" class="form-control border-start-0 ps-0" placeholder="搜尋飯店名稱、站名或關鍵字（例：美榮橋、大浴場、洗衣機）...">
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <select id="filterTag" class="form-select">
+                        <option value="all">🔍 顯示所有類別與特色</option>
+                        <option value="station">⚡ 離電車站超近 (5 分鐘內)</option>
+                        <option value="kokusai">🛍️ 下樓即國際通 (2 分鐘內)</option>
+                        <option value="breakfast">🥐 早餐 / 免費歡樂時光評分高</option>
+                        <option value="laundry">🧺 房內附設洗衣 / 烘衣設備</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- 飯店卡片列表容器 -->
+        <div class="row g-4" id="hotelList">
+            <!-- 由 JavaScript 動態生成 -->
+        </div>
+
+        <!-- 快速比較懶人包區塊 -->
+        <section class="mt-5 bg-white p-4 rounded-4 shadow-sm">
+            <h4 class="fw-bold text-dark mb-3"><i class="fa-solid fa-compass me-2 text-primary"></i>五天四夜行程 快速選房決策捷徑</h4>
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <div class="p-3 border rounded-3 bg-light h-100">
+                        <h6 class="fw-bold text-primary"><i class="fa-solid fa-trophy me-1"></i>交通與回程第一名</h6>
+                        <p class="small text-muted mb-0"><b>HOTEL STRATA NAHA</b><br>美榮橋站步行 30 秒，第五天清晨搭電車趕 8:30 飛機完全零壓力。</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="p-3 border rounded-3 bg-light h-100">
+                        <h6 class="fw-bold text-danger"><i class="fa-solid fa-hot-tub-person me-1"></i>大浴場泡湯首選</h6>
+                        <p class="small text-muted mb-0"><b>那霸縣廳前阿爾蒙特</b><br>附設大浴場可消除疲勞，旁邊有雙便利商店與大國藥妝，生活機能極強。</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="p-3 border rounded-3 bg-light h-100">
+                        <h6 class="fw-bold text-warning text-dark"><i class="fa-solid fa-utensils me-1"></i>早餐與歡樂時光</h6>
+                        <p class="small text-muted mb-0"><b>Hotel Art Stay 國際通</b><br>下樓 1 分鐘逛街，大廳提供免費飲品/啤酒/冰淇淋，早餐評分全區最高。</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="p-3 border rounded-3 bg-light h-100">
+                        <h6 class="fw-bold text-success"><i class="fa-solid fa-shirt me-1"></i>房內洗烘衣設備</h6>
+                        <p class="small text-muted mb-0"><b>Hotel Living Inn 縣廳前</b><br>房內附專屬洗衣機、烘衣機與微波爐，適合不想帶太多衣物旅遊的人。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer / 備忘錄 -->
+    <footer class="footer-memo py-4 border-top border-secondary">
+        <div class="container">
+            <div class="row g-4 mb-3">
+                <div class="col-md-6">
+                    <h5 class="text-white fw-bold"><i class="fa-solid fa-clock me-2"></i>五天四夜交通行程備忘</h5>
+                    <ul class="small text-white-50 ps-3 mb-0 lh-lg">
+                        <li><b>Day 1 (22:00 抵達)</b>：搭乘單軌電車（Yui Rail）末班車（約 23:30 前）至住宿處 Check-in。</li>
+                        <li><b>Day 2 & Day 4</b>：白天租車自駕，第四天晚間還車後搭乘電車回飯店。</li>
+                        <li><b>Day 5 (8:30 飛機)</b>：建議最晚於 <b>06:30 抵達那霸機場</b>，搭乘清晨首班單軌電車（約 06:00 發車）出發。</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h5 class="text-white fw-bold"><i class="fa-solid fa-circle-info me-2"></i>泳池開放說明</h5>
+                    <p class="small text-white-50 lh-lg mb-0">
+                        那霸市區飯店（如 STRATA、水之城）之戶外露天泳池，<b>冬季（11 月至 3 月）因水溫與安全考量皆不開放游泳</b>，僅能進行景觀拍照或休息欣賞，選擇飯店時請特別注意。
+                    </p>
+                </div>
+            </div>
+            <hr class="border-secondary my-3">
+            <div class="text-center small text-white-50">
+                © 沖繩自由行飯店比價與交通懶人包 ｜ 資料整理自各大訂房平台比價資訊
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Data and Logic -->
+    <script>
+        const hotels = [
+            {
+                id: 1,
+                name: "HOTEL STRATA NAHA（那霸斯特拉飯店）",
+                size: "設計感房型",
+                metro: "美榮橋站 (步行 30 秒)",
+                kokusai: "步行 5-7 分鐘",
+                tags: ["station"],
+                badgeText: "🏆 交通首選",
+                badgeClass: "bg-danger",
+                prices: [
+                    { platform: "AGODA", price: "$14,487", best: true }
+                ],
+                highlights: [
+                    "緊貼美榮橋地鐵站，深夜抵達與清晨趕 8:30 飛機極致便利",
+                    "設計感極佳，設有 2 樓健身房與戶外庭園泳池（冬季僅供觀賞）",
+                    "房內 MiniBar 提供雀巢膠囊咖啡",
+                    "附設立體停車場（1,500 円/日）"
+                ],
+                link: "https://baygolee.com/hotel-strata-naha/"
+            },
+            {
+                id: 2,
+                name: "那霸縣廳前阿爾蒙特酒店 (Almont Hotel Naha-Kenchomae)",
+                size: "15 平方公尺",
+                metro: "縣廳前站 (步行 3-4 分鐘)",
+                kokusai: "步行 3 分鐘",
+                tags: ["station", "kokusai", "breakfast"],
+                badgeText: "♨️ 質感泡湯",
+                badgeClass: "bg-primary",
+                prices: [
+                    { platform: "AGODA", price: "$10,152 (無早) / $12,705 (含早)", best: true },
+                    { platform: "KLOOK", price: "$10,622 / $13,657", best: false },
+                    { platform: "TRIP", price: "$10,947 / $13,622", best: false },
+                    { platform: "易遊網", price: "$10,984 / $13,672", best: false }
+                ],
+                highlights: [
+                    "設有大讚的大浴場泡湯，非常適合消除行程疲勞",
+                    "早餐評價極高、菜色豐盛",
+                    "樓下 1 分鐘內有大國藥妝、全家、7-11、Lawson",
+                    "大廳提供免費飲料咖啡，女性入住獲 Q10 面膜"
+                ],
+                link: "https://mimigo.tw/almont-hotel-naha/"
+            },
+            {
+                id: 3,
+                name: "那霸國際街藝術住宿酒店 (Hotel Art Stay Naha Kokusai Street)",
+                size: "16 平方公尺 (房間偏小)",
+                metro: "美榮橋站 (步行 7-8 分鐘)",
+                kokusai: "步行 1 分鐘",
+                tags: ["kokusai", "breakfast"],
+                badgeText: "🍦 歡樂招待",
+                badgeClass: "bg-warning text-dark",
+                prices: [
+                    { platform: "AGODA", price: "$9,173 (無早) / $10,444 (含早)", best: true },
+                    { platform: "易遊網", price: "$9,532 / $12,240", best: false },
+                    { platform: "KLOOK", price: "$9,944 / $13,120", best: false },
+                    { platform: "TRIP", price: "$10,425 / $13,357", best: false }
+                ],
+                highlights: [
+                    "位在國際通核心，下樓 1 分鐘即抵達鬧區，對面是暖暮拉麵",
+                    "大廳免費提供飲料、啤酒、冰淇淋與甜點服務",
+                    "早餐評價極高、在地特色料理多"
+                ],
+                link: "https://mimigo.tw/wbf-art-stay/"
+            },
+            {
+                id: 4,
+                name: "沖繩那霸拉根特酒店 (La'gent Hotel Okinawa Naha)",
+                size: "19 平方公尺 (空間充裕)",
+                metro: "美榮橋站 (步行 7-9 分鐘)",
+                kokusai: "步行 10-12 分鐘",
+                tags: [],
+                badgeText: "🥩 美式現代",
+                badgeClass: "bg-info text-dark",
+                prices: [
+                    { platform: "樂天旅遊", price: "$9,548 (無早) / $10,231 (含早)", best: true },
+                    { platform: "易遊網", price: "$9,604 / $14,184", best: false },
+                    { platform: "TRIP", price: "$9,655 (無早)", best: false },
+                    { platform: "AGODA", price: "$10,386 / $13,050", best: false }
+                ],
+                highlights: [
+                    "裝潢美式新穎、空間舒適無壓迫感",
+                    "對面即是「燒肉王」，附設平面與立體停車塔（約 1,500 日圓/日）",
+                    "房內免費提供礦泉水、咖啡包及冰箱罐裝飲料"
+                ],
+                link: "https://boniutravel.com/blog/post/lagent-naha"
+            },
+            {
+                id: 5,
+                name: "那霸水之城飯店 (Hotel Aqua Citta Naha)",
+                size: "標準商旅格局",
+                metro: "美榮橋站 (步行 7-8 分鐘)",
+                kokusai: "步行 10-12 分鐘",
+                tags: ["breakfast"],
+                badgeText: "🏊 透明泳池",
+                badgeClass: "bg-secondary",
+                prices: [
+                    { platform: "易遊網", price: "$8,240 (無早) / $11,172", best: true },
+                    { platform: "AGODA", price: "$8,262 / $11,037 (含早最優)", best: true },
+                    { platform: "KLOOK", price: "$8,729 / $12,078", best: false }
+                ],
+                highlights: [
+                    "頂樓有著名透明無邊際泳池（冬季僅供觀賞不開放下水）",
+                    "附近有 Times 與 Orix 租車營業所，自駕極便利",
+                    "提供付費停車場（一次付費可無限次出入），大廳免費咖啡飲料"
+                ],
+                link: "https://mimigo.tw/aqua-citta/"
+            },
+            {
+                id: 6,
+                name: "那霸九茂地巢穴 (Nest Hotel Naha Kumoji)",
+                size: "19 平方公尺",
+                metro: "美榮橋站 (步行 5 分鐘)",
+                kokusai: "步行 7-9 分鐘",
+                tags: ["station"],
+                badgeText: "🏪 高 CP 質感",
+                badgeClass: "bg-success",
+                prices: [
+                    { platform: "AGODA", price: "$9,742 (無早) / $11,655 (含早)", best: true },
+                    { platform: "TRIP", price: "$9,822 / $11,958", best: false },
+                    { platform: "KLOOK", price: "$9,861 / $12,390", best: false }
+                ],
+                highlights: [
+                    "高品質連鎖現代商旅，交通與價格平衡極佳",
+                    "左右轉步行不到 1 分鐘即有 Lawson 與 7-11 超商",
+                    "無自設停車場，需停附近收費停車場"
+                ],
+                link: "https://baygolee.com/nest-hotel-naha-kumoji/"
+            },
+            {
+                id: 7,
+                name: "那霸浮島龍神酒店 (Ryuujin Hotel Ukishima Naha)",
+                size: "公寓式房型 (大空間)",
+                metro: "縣廳前/牧志站 (步行 8-10 分鐘)",
+                kokusai: "步行 1-2 分鐘",
+                tags: ["kokusai", "laundry"],
+                badgeText: "🍳 簡易廚房",
+                badgeClass: "bg-dark",
+                prices: [
+                    { platform: "樂天旅遊", price: "$8,909 (無早)", best: true },
+                    { platform: "AGODA", price: "$10,024", best: false },
+                    { platform: "TRIP", price: "$10,234", best: false }
+                ],
+                highlights: [
+                    "位於浮島通入口，1-2 分鐘即可開始逛國際通",
+                    "公寓式配備，房內有簡易廚房與獨立洗衣機，極度適合多日住宿"
+                ],
+                link: "https://gototravel.tw/ryuujin-hotel-ukishima-naha/"
+            },
+            {
+                id: 8,
+                name: "酒店利文因縣廳前 (Hotel Living Inn Kenchouekimae)",
+                size: "房間稍小 (精簡型)",
+                metro: "縣廳前站 (步行 3-4 分鐘)",
+                kokusai: "步行 5 分鐘",
+                tags: ["station", "laundry"],
+                badgeText: "🧺 房內洗烘衣",
+                badgeClass: "bg-info text-dark",
+                prices: [
+                    { platform: "KLOOK", price: "$8,202 (無早)", best: true },
+                    { platform: "TRIP", price: "$9,123", best: false },
+                    { platform: "易遊網", price: "$18,968", best: false }
+                ],
+                highlights: [
+                    "直接在房內配備「獨立洗衣機、烘衣機與微波爐」",
+                    "距離縣廳前站僅 3-4 分鐘，交通機能極高，無提供早餐"
+                ],
+                link: "https://nancyik2001.pixnet.net/blog/posts/849292919313493502"
+            },
+            {
+                id: 9,
+                name: "松尾2號城市海洋酒店 (Hotel Urbansea 2 Matsuo)",
+                size: "無人公寓房型",
+                metro: "縣廳前站 (步行 8-10 分鐘)",
+                kokusai: "步行 5 分鐘",
+                tags: ["laundry"],
+                badgeText: "🤖 自助無人",
+                badgeClass: "bg-secondary",
+                prices: [
+                    { platform: "易遊網", price: "$8,436 (無早)", best: true },
+                    { platform: "TRIP", price: "$8,490", best: false },
+                    { platform: "AGODA", price: "$8,869", best: false }
+                ],
+                highlights: [
+                    "自助 Check-in 無人公寓，享有高隱私度",
+                    "房內附洗脫烘一體機，價格平實"
+                ],
+                link: "https://www.ekegogo.com/blog.php?lid=2011%2F12%2F24_3E30VTFUW&sid=2014%2F01%2F22_3ZC025JGT&pid=1025102722_1902A1C48"
+            }
+        ];
+
+        function renderHotels(data) {
+            const container = document.getElementById('hotelList');
+            container.innerHTML = '';
+
+            if (data.length === 0) {
+                container.innerHTML = `<div class="col-12 text-center py-5 text-muted"><h4>沒有找到符合條件的飯店</h4></div>`;
+                return;
+            }
+
+            data.forEach(hotel => {
+                let priceRows = hotel.prices.map(p => `
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <span class="platform-badge">${p.platform}</span>
+                        <span class="${p.best ? 'price-best' : 'text-secondary fs-6'}">${p.price}</span>
+                    </div>
+                `).join('');
+
+                let highlightList = hotel.highlights.map(h => `<li class="mb-1">${h}</li>`).join('');
+
+                let cardHtml = `
+                    <div class="col-lg-6 col-xl-4">
+                        <div class="hotel-card p-3">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h6 class="fw-bold mb-0 fs-6">
+                                    <a href="${hotel.link}" target="_blank" class="hotel-title-link" title="點擊查看部落格住宿開箱介紹">${hotel.name} <i class="fa-solid fa-arrow-up-right-from-square small text-muted"></i></a>
+                                </h6>
+                                <span class="badge ${hotel.badgeClass} badge-tag ms-1">${hotel.badgeText}</span>
+                            </div>
+                            
+                            <div class="info-pill text-muted small my-2">
+                                <div><i class="fa-solid fa-ruler-combined text-primary me-1"></i><b>空間：</b>${hotel.size}</div>
+                                <div><i class="fa-solid fa-train-subway text-success me-1"></i><b>電車：</b>${hotel.metro}</div>
+                                <div><i class="fa-solid fa-bag-shopping text-warning me-1"></i><b>國際通：</b>${hotel.kokusai}</div>
+                            </div>
+
+                            <div class="bg-light p-2 rounded-3 mb-3 border">
+                                <div class="fw-bold small text-secondary mb-1"><i class="fa-solid fa-tags me-1"></i>比價參考：</div>
+                                ${priceRows}
+                            </div>
+
+                            <div class="mb-3 flex-grow-1">
+                                <div class="fw-bold small text-secondary mb-1"><i class="fa-solid fa-star text-warning me-1"></i>特色亮點：</div>
+                                <ul class="small text-muted ps-3 mb-0">
+                                    ${highlightList}
+                                </ul>
+                            </div>
+
+                            <div class="pt-2 border-top text-end mt-auto">
+                                <a href="${hotel.link}" target="_blank" class="btn btn-outline-primary btn-sm rounded-pill px-3 w-100">
+                                    查看部落格住宿開箱介紹 <i class="fa-solid fa-arrow-right ms-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += cardHtml;
+            });
+        }
+
+        renderHotels(hotels);
+
+        document.getElementById('searchInput').addEventListener('input', filterData);
+        document.getElementById('filterTag').addEventListener('change', filterData);
+
+        function filterData() {
+            const searchText = document.getElementById('searchInput').value.toLowerCase();
+            const selectedTag = document.getElementById('filterTag').value;
+
+            const filtered = hotels.filter(hotel => {
+                const matchesSearch = hotel.name.toLowerCase().includes(searchText) ||
+                                      hotel.metro.toLowerCase().includes(searchText) ||
+                                      hotel.highlights.some(h => h.toLowerCase().includes(searchText));
+                
+                const matchesTag = selectedTag === 'all' || hotel.tags.includes(selectedTag);
+
+                return matchesSearch && matchesTag;
+            });
+
+            renderHotels(filtered);
+        }
+    </script>
+</body>
+</html>
